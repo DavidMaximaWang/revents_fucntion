@@ -1,29 +1,37 @@
+import { createEvent } from '@testing-library/dom';
 import cuid from 'cuid';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Segment, Header, Form, Button } from 'semantic-ui-react';
+import { updateEvent } from '../eventDashboard/eventActions';
 
-export default function EventForm({ setFormOpen, setEvent, createEvent, selectedEvent, updateEvent}) {
-  const initialValues= selectedEvent ?? {
-    title:'',
-    category:'',
-    description:'',
-    city:'',
-    venue:'',
-    date:'',
+export default function EventForm({match, history}) {
+
+  const selectedEvent= useSelector(state=>state.event.events.find(evt=>evt.id===match.params.id));
+  const dispatch= useDispatch();
+
+  const initValues = selectedEvent ?? {
+    title: '',
+    category: '',
+    description: '',
+    city: '',
+    venue: '',
+    date: '',
   }
-  const [values, setValues] = useState(initialValues);
+  const [values, setValues] = useState(initValues);
   function handleInputChange(e){
     const {name, value} = e.target;
     setValues({...values, [name]:value})
   }
   function handleFormSubmit(){
     if(selectedEvent){
-      updateEvent({...selectedEvent, ...values});
+      dispatch(updateEvent({...selectedEvent, ...values}))
     }else
     {
-      createEvent({...values, id: cuid(), hostedBy:'Tom', hostPhotoURL:'/assets/user.png'});
+      dispatch(createEvent({...values, id: cuid(), hostedBy:'Tom', hostPhotoURL:'/assets/user.png'}))
     }
-    setFormOpen(false);
+    history.push('/events');
   }
   return (
     <Segment clearing>
@@ -49,7 +57,8 @@ export default function EventForm({ setFormOpen, setEvent, createEvent, selected
         </Form.Field>
         <Button type='submit' floated='right' positive content='Submit' />
         <Button
-          onClick={() => setFormOpen(false)}
+          as={Link}
+          to='/events'
           type='submit'
           floated='right'
           content='Cancel'
