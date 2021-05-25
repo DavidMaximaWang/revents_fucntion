@@ -11,6 +11,6 @@ export default function ModalWrapper({children, size, header}) {
             <Modal.Content>
                 {children}
             </Modal.Content>
-        </Modal>
+        </Modal> 
     )
 }

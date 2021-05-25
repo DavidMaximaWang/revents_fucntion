@@ -21,6 +21,13 @@ export default function Sandbox(){
         content='Open Modal'
         color='teal'
       />
+          <Button
+        onClick={() =>
+          dispatch(openModal({ modalType: 'Login', modalProps: { email:'', password:'' } }))
+        }
+        content='Open Modal'
+        color='teal'
+      />
     </>
   )
 }
