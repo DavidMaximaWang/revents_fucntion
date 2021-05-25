@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 export default function EventDetailedPage({ match }) {
   const id = match.params.id;
-  const event = useSelector((state) => state.event.events.find((event) => event.id == id));
+  const event = useSelector((state) => state.event.events.find((event) => event.id === id));
   return (
     <>
       <Grid>

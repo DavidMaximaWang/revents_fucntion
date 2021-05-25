@@ -50,26 +50,34 @@ export default function EventForm(props) {
           history.push('/events');
         }}
       >
-        <Form className='ui form'>
-          <MyTextInput name='title' label='title' placeholder='Event title'></MyTextInput>
-          <MySelectInput name='category' placeholder='Event category' options={categoryData} />
-          <MyTextArea name='description' placeholder='Description' rows={3} />
-          <MyTextInput name='city' placeholder='City'></MyTextInput>
+        {({ isSubmitting, dirty, isValid }) => (
+          <Form className='ui form'>
+            <MyTextInput name='title' label='title' placeholder='Event title'></MyTextInput>
+            <MySelectInput name='category' placeholder='Event category' options={categoryData} />
+            <MyTextArea name='description' placeholder='Description' rows={3} />
+            <MyTextInput name='city' placeholder='City'></MyTextInput>
 
-          <MyTextInput name='venue' placeholder='Venue'></MyTextInput>
-          <MyDateInput
-            name='date'
-            placeholder='Date'
-            type='date'
-            timeFormat='HH:mm'
-            showTimeSelect
-            timeCaption='time'
-            dateFormat='MMMM d, yyyy h:mm a'
-          ></MyDateInput>
+            <MyTextInput name='venue' placeholder='Venue'></MyTextInput>
+            <MyDateInput
+              name='date'
+              placeholder='Date'
+              type='date'
+              timeFormat='HH:mm'
+              showTimeSelect
+              timeCaption='time'
+              dateFormat='MMMM d, yyyy h:mm a'
+            ></MyDateInput>
 
-          <Button type='submit' floated='right' positive content='Submit' />
-          <Button as={Link} to='/events' type='submit' floated='right' content='Cancel' />
-        </Form>
+            <Button
+              type='submit'
+              floated='right'
+              positive
+              content='Submit'
+              disabled={isSubmitting || !dirty || !isValid}
+            />
+            <Button as={Link} to='/events' type='submit' floated='right' content='Cancel' />
+          </Form>
+        )}
       </Formik>
     </Segment>
   );
