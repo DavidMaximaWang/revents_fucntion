@@ -1,18 +1,21 @@
-import { createEvent } from '@testing-library/dom';
 import cuid from 'cuid';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Segment, Header, Button, FormField, Label } from 'semantic-ui-react';
-import { updateEvent } from '../eventDashboard/eventActions';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Segment, Header, Button } from 'semantic-ui-react';
+import { createEvent, updateEvent } from '../eventDashboard/eventActions';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import MyTextInput from '../../../app/common/form/MyTextInput';
+import MyTextArea from '../../../app/common/form/MyTextArea';
+import { categoryData } from '../../../app/api/categoryOptions';
+import MySelectInput from '../../../app/common/form/MySelectInput';
+import MyDateInput from '../../../app/common/form/MyDateInput';
 
 export default function EventForm(props) {
-  const { handleSubmit, match, history } = props;
+  const { match, history } = props;
   const selectedEvent = useSelector((state) => state.event.events.find((evt) => evt.id === match.params.id));
   const dispatch = useDispatch();
-
   const initValues = selectedEvent ?? {
     title: '',
     category: '',
@@ -23,20 +26,15 @@ export default function EventForm(props) {
   };
   const validationSchema = Yup.object({
     title: Yup.string().required('You must provide a title'),
+    category: Yup.string().required('You must provide a category'),
+    description: Yup.string().required(),
+    city: Yup.string().required(),
+    venue: Yup.string().required(),
+    date: Yup.string().required(),
   });
-  const [values, setValues] = useState(initValues);
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  }
-  function handleFormSubmit() {
-    if (selectedEvent) {
-      dispatch(updateEvent({ ...selectedEvent, ...values }));
-    } else {
-      dispatch(createEvent({ ...values, id: cuid(), hostedBy: 'Tom', hostPhotoURL: '/assets/user.png' }));
-    }
-    history.push('/events');
-  }
+
+  function handleFormSubmit() {}
+
   return (
     <Segment clearing>
       <Header content='Create new event' />
@@ -44,29 +42,30 @@ export default function EventForm(props) {
         initialValues={initValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log(values);
+          if (selectedEvent) {
+            dispatch(updateEvent({ ...selectedEvent, ...values }));
+          } else {
+            dispatch(createEvent({ ...values, id: cuid(), hostedBy: 'Tom', hostPhotoURL: '/assets/user.png' }));
+          }
+          history.push('/events');
         }}
       >
         <Form className='ui form'>
-          <FormField>
-            <Field name='title' placeholder='Event title'></Field>
-            <ErrorMessage name='title' render={(error) => <Label basic color='red' content={error}></Label>} />
-          </FormField>
-          <FormField>
-            <Field name='category' placeholder='Category'></Field>
-          </FormField>
-          <FormField>
-            <Field name='description' placeholder='Description'></Field>
-          </FormField>
-          <FormField>
-            <Field name='city' placeholder='City'></Field>
-          </FormField>
-          <FormField>
-            <Field name='venue' placeholder='Venue'></Field>
-          </FormField>
-          <FormField>
-            <Field name='date' placeholder='Date' type='date'></Field>
-          </FormField>
+          <MyTextInput name='title' label='title' placeholder='Event title'></MyTextInput>
+          <MySelectInput name='category' placeholder='Event category' options={categoryData} />
+          <MyTextArea name='description' placeholder='Description' rows={3} />
+          <MyTextInput name='city' placeholder='City'></MyTextInput>
+
+          <MyTextInput name='venue' placeholder='Venue'></MyTextInput>
+          <MyDateInput
+            name='date'
+            placeholder='Date'
+            type='date'
+            timeFormat='HH:mm'
+            showTimeSelect
+            timeCaption='time'
+            dateFormat='MMMM d, yyyy h:mm a'
+          ></MyDateInput>
 
           <Button type='submit' floated='right' positive content='Submit' />
           <Button as={Link} to='/events' type='submit' floated='right' content='Cancel' />
