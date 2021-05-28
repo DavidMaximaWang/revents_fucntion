@@ -36,9 +36,9 @@ export default function EventDetailedInfo({event}) {
                     <span>{event.venue.address}</span>
                 </Grid.Column>
                 <Grid.Column width={4}>
-                    <Button
+                    <Button 
                         onClick={() => setMapOpenToggle(!mapOpen)}
-                        color="teal" size="tiny"
+                        color="teal" size="tiny" 
                         content={mapOpen ? 'Hide map' : 'Show map'}
                     />
                 </Grid.Column>
@@ -47,6 +47,6 @@ export default function EventDetailedInfo({event}) {
         {mapOpen &&
         <EventDetailedMap latLng={event.venue.latLng} />}
     </Segment.Group>
-
+    
     )
 }

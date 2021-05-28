@@ -29,7 +29,7 @@ export default function LoginForm() {
                     <Form className='ui form'>
                         <MyTextInput name='email' placeholder='Email Address' />
                         <MyTextInput name='password' placeholder='Password' type='password' />
-                        <Button
+                        <Button 
                             loading={isSubmitting}
                             disabled={!isValid || !dirty || isSubmitting}
                             type='submit'

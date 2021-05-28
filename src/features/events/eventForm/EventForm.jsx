@@ -80,10 +80,10 @@ export default function EventForm({ match, history }) {
             <MyTextArea name='description' placeholder='Description' rows={3} />
             <Header sub color='teal' content='Event Location Details' />
             <MyPlaceInput name='city' placeholder='City' />
-            <MyPlaceInput
-              name='venue'
+            <MyPlaceInput 
+              name='venue' 
               disabled={!values.city.latLng}
-              placeholder='Venue'
+              placeholder='Venue' 
               options={{
                 location: new google.maps.LatLng(values.city.latLng),
                 radius: 1000,
