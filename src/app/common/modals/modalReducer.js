@@ -8,7 +8,7 @@ export function openModal(payload) {
   };
 }
 
-export function closeModal(payload) {
+export function closeModal() {
   return {
     type: CLOSE_MODAL,
   };
@@ -25,6 +25,5 @@ export default function modalReducer(state = initialState, { type, payload }) {
       return null;
     default:
       return state;
-
   }
 }

@@ -1,13 +1,14 @@
-export const SIGN_IN_USER = 'SIGN_IN_USER';
-export const SIGN_OUT_USER = 'SIGN_OUT_USER';
+import { SIGN_IN_USER, SIGN_OUT_USER } from './authConstants';
 
 const initialState = {
   authenticated: true,
-  currentUser: {email:"bob@aa.com"},
+  currentUser: {
+      email: 'bob@test.com',
+      photoURL: '/assets/user.png'
+  },
 };
 
-export default function authReducer(state = initialState, action) {
-  const { type, payload } = action;
+export default function authReducer(state = initialState, { type, payload }) {
   switch (type) {
     case SIGN_IN_USER:
       return {
@@ -18,13 +19,12 @@ export default function authReducer(state = initialState, action) {
           photoURL: '/assets/user.png',
         },
       };
-    case SIGN_OUT_USER: {
+    case SIGN_OUT_USER:
       return {
         ...state,
         authenticated: false,
         currentUser: null,
       };
-    }
     default:
       return state;
   }

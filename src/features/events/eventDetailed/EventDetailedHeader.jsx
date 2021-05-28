@@ -17,13 +17,11 @@ const eventImageTextStyle = {
 };
 
 export default function EventDetailedHeader({event}) {
-
-const {title, date, category, description, city, venue, hostedBy, hostPhotoURL, attendees} = event;
   return (
     <Segment.Group>
       <Segment basic attached='top' style={{ padding: '0' }}>
         <Image
-          src={`/assets/categoryImages/${category}.jpg`}
+          src={`/assets/categoryImages/${event.category}.jpg`}
           fluid
           style={eventImageStyle}
         />
@@ -34,12 +32,12 @@ const {title, date, category, description, city, venue, hostedBy, hostPhotoURL, 
               <Item.Content>
                 <Header
                   size='huge'
-                  content={title}
+                  content={event.title}
                   style={{ color: 'white' }}
                 />
-                <p>{format(date, 'MMMM d, yyyy h:mm a')}</p>
+                <p>{format(event.date, 'MMMM d, yyyy h:mm a')}</p>
                 <p>
-                  Hosted by <strong>{hostedBy}</strong>
+                  Hosted by <strong>{event.hostedBy}</strong>
                 </p>
               </Item.Content>
             </Item>
